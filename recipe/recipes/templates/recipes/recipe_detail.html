@@ -1,0 +1,30 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+</br>
+</br>
+</br>
+</br>
+</br>
+  <div class="container">
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-8">
+        <h1 class="text-center mb-4">{{ recipe.title }}</h1>
+        <div class="d-flex justify-content-center mb-4">
+          <img src="{{ recipe.image }}" alt="{{ recipe.title }}" style="max-width: 100%; height: auto;">
+        </div>
+        <div class="d-flex justify-content-center mb-4">
+          <p>{{ recipe.ingredients }}</p>
+        </div>
+        <div class="d-flex justify-content-center">
+          <a href="{% url 'recipe_update' pk=recipe.pk %}" class="btn btn-primary mr-3">Edit</a>
+          <form action="{% url 'recipe_delete' pk=recipe.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+{% endblock %}

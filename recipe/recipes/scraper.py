@@ -8,7 +8,8 @@ from .models import Recipe
 
 def get_recipes_info():
     # Extract course information from Martha Stewart website using BeautifulSoup
-    urls = ["https://www.marthastewart.com/313844/chocolate-covered-strawberries", 
+    urls = ["https://www.marthastewart.com/1515095/minty-margarita-guacamole", 
+            "https://www.marthastewart.com/1550857/yellow-tomato-and-peach-gazpacho",
             "https://www.marthastewart.com/338930/chocolate-covered-almonds", 
             "https://www.marthastewart.com/350005/devils-food-cake-milk-chocolate-frosting"]
     recipes = []
