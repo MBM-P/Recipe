@@ -1,8 +1,8 @@
 {% block content %}
-  <h2>Ajouter un commentaire pour "{{ recette.nom }}"</h2>
+  <h2>Donnez nous votre avis sur la recette :</h2>
   <form method="post">
     {% csrf_token %}
     {{ commentaire_form.as_p }}
-    <button type="submit">Ajouter le commentaire</button>
+    <button type="submit"class="btn btn-outline-warning border border-dark">Ajouter le commentaire</button>
   </form>
 {% endblock %}

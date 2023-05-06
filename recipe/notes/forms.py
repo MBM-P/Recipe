@@ -6,7 +6,7 @@ class NoteForm(forms.ModelForm):
         model = Note
         fields = ['valeur']
         widgets = {
-            'valeur': forms.NumberInput(attrs={'min': 0, 'max': 5, 'step': 0.1}),
+            'valeur': forms.NumberInput(attrs={ 'min': 0, 'max': 5, 'step': 1,'style': 'width: 55px;',}),
         }
 
     def __init__(self, *args, **kwargs):

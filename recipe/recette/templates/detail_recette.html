@@ -1,41 +1,121 @@
-details recette :
 {% extends 'base/base.html' %}
 {% load static %}
+
 {% block content %}
-    
-<h1>{{ recette.nom }}</h1>
-<p>{{ recette.description }}</p>
-<p>Temps de préparation: {{ recette.temps_preparation }} minutes</p>
-<p>Temps de cuisson: {{ recette.temps_cuisson }} minutes</p>
-<p>Nombre de personnes: {{ recette.personnes }}</p>
-
-<h2>Etapes de la recette:</h2>
-<ol>
-  {% for etape in etapes %}
-    <li>{{ etape.description }}</li>
-  {% empty %}
-    <li>Aucune étape trouvée.</li>
-  {% endfor %}
-</ol>
-
-<h2>Note moyenne:</h2>
-<p>{{ note_moyenne }} / 5</p>
-<form method="post" action="{% url 'ajouter_note' recette.pk %}">
-    {% csrf_token %}
-    {% include 'ajouter_note.html' %}
-  </form>
-  <form method="post" action="{% url 'ajouter_commentaire' recette.pk %}">
-      {% csrf_token %}
-      {% include 'ajouter_commentaire.html' %}
-  </form>
-<h2>Commentaires:</h2>
-{% for commentaire in commentaires %}
-  <div>
-    <p><strong>{{ commentaire.user }}</strong> a écrit le {{ commentaire.date|date:"d/m/Y H:i:s" }}</p>
-    <p>{{ commentaire.contenu }}</p>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <img src="{{ settings.IMAGE_URL }}" class="card-img-top" alt="Image de la recette">
+      <div class="card-body">
+        <h1 class="card-title">{{ recette.nom }}</h1>
+        <p class="card-text">{{ recette.description }}</p>
+        <p class="card-text">Temps de préparation: {{ recette.temps_preparation }} minutes</p>
+        <p class="card-text">Temps de cuisson: {{ recette.temps_cuisson }} minutes</p>
+        <p class="card-text">Nombre de personnes: {{ recette.personnes }}</p>
+      </div>
+    </div>
   </div>
-{% empty %}
-  <p>Aucun commentaire trouvé.</p>
-{% endfor %}
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h2 class="card-title">Etapes de la recette:</h2>
+        <ol>
+          {% for etape in etapes %}
+            <li>{{ etape.description }}</li>
+          {% empty %}
+            <li>Aucune étape trouvée.</li>
+          {% endfor %}
+        </ol>
 
+        <h2 class="card-title">Note moyenne:</h2>
+        <p class="card-text">
+            {% if note_moyenne < 2.5 %}
+                <span class="text-danger">{{ note_moyenne|floatformat:1 }}</span> / 5
+            {% elif note_moyenne < 4 %}
+                <span class="text-warning">{{ note_moyenne|floatformat:1 }}</span> / 5
+            {% else %}
+                <span class="text-success">{{ note_moyenne|floatformat:1 }}</span> / 5
+            {% endif %}
+        </p>
+        
+        <form method="post" action="{% url 'ajouter_note' recette.pk %}">
+          {% csrf_token %}
+          {% include 'ajouter_note.html' %}
+        </form>
+        <form method="post" action="{% url 'ajouter_commentaire' recette.pk %}">
+          {% csrf_token %}
+          {% include 'ajouter_commentaire.html' %}
+        </form>
+
+        <h2 class="card-title">Commentaires:</h2>
+        {% for commentaire in commentaires %}
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title"><strong>{{ commentaire.user }}</strong> a écrit le {{ commentaire.date|date:"d/m/Y H:i:s" }}</h5>
+            <p class="card-text">{{ commentaire.contenu }}</p>
+          </div>
+          <a href="{% url 'ajouter_like' commentaire.pk %}" class="btn btn-outline-success btn-sm like-btn" data-comment-id="{{ commentaire.pk }}" data-likes="{{ commentaire.likes }}">  <i class="bi bi-hand-thumbs-up"></i>({{ commentaire.likes }})</a>
+          <a href="{% url 'ajouter_dislike' commentaire.pk %}" class="btn btn-outline-danger btn-sm dislike-btn" data-comment-id="{{ commentaire.pk }}" data-dislikes="{{ commentaire.dislikes }}">Dislike ({{ commentaire.dislikes }})</a>
+        </div>
+      {% empty %}
+        <p>Aucun commentaire trouvé.</p>
+      {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
+<script>
+    $(document).ready(function() {
+  // fonction pour gérer le clic sur le bouton "Like"
+  $(".like-btn").click(function(e) {
+    e.preventDefault();
+    var btn = $(this); // stocke le bouton "Like" cliqué
+    var commentId = btn.data("comment-id"); // récupère l'ID du commentaire associé au bouton
+    var likes = btn.data("likes"); // récupère le nombre de likes actuel pour ce commentaire
+    $.ajax({
+      type: "POST",
+      url: "{% url 'ajouter_like' 0 %}".replace("0", commentId),
+      data: {
+        csrfmiddlewaretoken: "{{ csrf_token }}",
+        comment_id: commentId,
+      },
+      success: function(response) {
+        // met à jour le nombre de likes pour le commentaire
+        likes++;
+        btn.data("likes", likes);
+        btn.text("Like (" + likes + ")");
+      },
+      error: function(response) {
+        console.log(response);
+      }
+    });
+  });
+
+  // fonction pour gérer le clic sur le bouton "Dislike"
+  $(".dislike-btn").click(function(e) {
+    e.preventDefault();
+    var btn = $(this); // stocke le bouton "Dislike" cliqué
+    var commentId = btn.data("comment-id"); // récupère l'ID du commentaire associé au bouton
+    var dislikes = btn.data("dislikes"); // récupère le nombre de dislikes actuel pour ce commentaire
+    $.ajax({
+      type: "POST",
+      url: "{% url 'ajouter_dislike' 0 %}".replace("0", commentId),
+      data: {
+        csrfmiddlewaretoken: "{{ csrf_token }}",
+        comment_id: commentId,
+      },
+      success: function(response) {
+        // met à jour le nombre de dislikes pour le commentaire
+        dislikes++;
+        btn.data("dislikes", dislikes);
+        btn.text("Dislike (" + dislikes + ")");
+      },
+      error: function(response) {
+        console.log(response);
+      }
+    });
+  });
+});
+
+</script>
