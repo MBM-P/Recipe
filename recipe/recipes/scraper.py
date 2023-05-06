@@ -9,6 +9,13 @@ from .models import Recipe
 def get_recipes_info():
     # Extract course information from Martha Stewart website using BeautifulSoup
     urls = ["https://www.marthastewart.com/1515095/minty-margarita-guacamole", 
+            "https://www.marthastewart.com/1112237/wild-salmon-english-peas-and-mustard-beurre-blanc",
+            "https://www.marthastewart.com/1554318/white-cheddar-scalloped-potatoes",
+            "https://www.marthastewart.com/1165277/crown-roast-lamb-pilaf-stuffing",
+            "https://www.marthastewart.com/1515859/egg-noodles-asparagus-and-grated-egg-yolks",
+            "https://www.marthastewart.com/1107490/feta-and-dill-stuffed-artichokes",
+            "https://www.marthastewart.com/1111970/soaked-chia",
+            "https://www.marthastewart.com/1539829/no-bake-ricotta-blueberry-cheesecake",
             "https://www.marthastewart.com/1550857/yellow-tomato-and-peach-gazpacho",
             "https://www.marthastewart.com/338930/chocolate-covered-almonds", 
             "https://www.marthastewart.com/350005/devils-food-cake-milk-chocolate-frosting"]
