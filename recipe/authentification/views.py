@@ -43,16 +43,13 @@ def profile_update(request):
     user = request.user
     if request.method == 'POST':
         profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=user.profile)
-        password_form = PasswordChangeForm(user=request.user, data=request.POST)
-        if profile_form.is_valid() and password_form.is_valid():
+        if profile_form.is_valid():
             profile_form.save()
-            password_form.save()
             messages.success(request, 'Your profile has been updated.')
             return redirect('profile')
     else:
         profile_form = ProfileUpdateForm(instance=user.profile)
-        password_form = PasswordChangeForm(user=request.user)
-    return render(request, 'profile_update.html', {'profile_form': profile_form, 'password_form': password_form})
+    return render(request, 'profile_update.html', {'profile_form': profile_form})
 
 def profile_detail(request):
     profile = request.user.profile
