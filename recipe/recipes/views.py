@@ -10,17 +10,17 @@ def recipe_list(request):
     return render(request, 'recipes/recipe_list.html', {'recipes': recipes})
 def recipe_detail(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
-    return render(request, 'recipe_detail.html', {'recipe': recipe})
+    return render(request, 'recipes/recipe_detail.html', {'recipe': recipe})
 
 def recipe_create(request):
     if request.method == 'POST':
         form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
             recipe = form.save()
-            return redirect('recipe_detail', pk=recipe.pk)
+            return redirect('recipes/')
     else:
         form = RecipeForm()
-    return render(request, 'recipe_form.html', {'form': form})
+    return render(request, 'recipes/recipe_form.html', {'form': form})
 
 def recipe_update(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
@@ -31,7 +31,7 @@ def recipe_update(request, pk):
             return redirect('recipe_detail', pk=recipe.pk)
     else:
         form = RecipeForm(instance=recipe)
-    return render(request, 'recipe_form.html', {'form': form})
+    return render(request, 'recipes/recipe_form.html', {'form': form})
 
 def recipe_delete(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)

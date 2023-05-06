@@ -1,9 +1,11 @@
 {% extends 'base/base.html' %}
 
 {% block content %}
-    <h1>Recipes</h1>
+
     
     <ul>  
+      <h1>Recipes</h1>
+    <h3><a href="{% url 'recipe_create' %}">Add a new recipe</a></h3>
         {% for recipe in recipes %}
             <div class="col-lg-3 mx-5 my-4 d-inline-flex shadow ">
                 <div class="card shadow">
@@ -11,7 +13,7 @@
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title fw-bold">{{ recipe.title }} </h5>
                 
-                    <a href="http://127.0.0.1:8000/reservation/reserver/"
+                    <a href="http://127.0.0.1:8000/recipes/{{ recipe.id }}/"
                     class="btn btn-primary text-white mt-auto align-self-start">More Details</a>
                 </div>
                 </div>
