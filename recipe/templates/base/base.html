@@ -43,7 +43,10 @@
                                 class="fa-solid fa-house"></i> Home</a></li>
                     <li class="nav-item"><a class="text-dark nav-link" href="#services"> <i
                                 class="fa-solid fa-utensils"></i> Recipes</a></li>
-                    <li class="nav-item"><a class="text-dark nav-link" href="{% url 'logout' %}"> <i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+                    <li class="nav-item  "><a class=" text-dark nav-link" href="{% url 'profile' %}"><img src="{{ user.profile.image.url }}" alt="{{ user.profile.name }}'s profile picture" class="rounded-circle"width="32" height="32">{{user}}</a>
+                    </li>
+                    <li class="nav-item"><a class="text-dark nav-link" href="{% url 'logout' %}"> <i
+                                class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
                     {% else %}
                     <li class="nav-item"><a class="text-dark nav-link" href="{% url 'signIn' %}"><i
                                 class="fa-solid fa-right-to-bracket"></i> Login</a></li>
