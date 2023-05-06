@@ -126,6 +126,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+IMAGE_URL = "https://www.hervecuisine.com/wp-content/uploads/2017/02/recette-du-quinoa-bol-1118x516.jpg.webp"
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR,'static')

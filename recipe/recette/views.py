@@ -8,6 +8,7 @@ from notes.forms import NoteForm
 from django.contrib.auth.decorators import login_required
 from commentaires.forms import CommentaireForm
 from django.contrib import messages
+from django.http import HttpResponseRedirect
 
 @login_required
 def ajouter_commentaire(request, pk):
@@ -70,3 +71,17 @@ def detail_recette(request, pk):
     }
 
     return render(request, 'detail_recette.html', context)
+@login_required
+def ajouter_like(request, pk):
+    commentaire = get_object_or_404(Commentaire, pk=pk)
+    commentaire.likes += 1
+    commentaire.save()
+    messages.success(request, "Le commentaire a été liké avec succès.")
+    return redirect('detail_recette', pk=commentaire.recette.pk)
+@login_required
+def ajouter_dislike(request, pk):
+    commentaire = get_object_or_404(Commentaire, pk=pk)
+    commentaire.dislikes += 1
+    commentaire.save()
+    messages.success(request, "Le commentaire a été disliké avec succès.")
+    return redirect('detail_recette', pk=commentaire.recette.pk)
