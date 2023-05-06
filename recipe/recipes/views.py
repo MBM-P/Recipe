@@ -4,10 +4,18 @@ from .scraper import get_recipes_info
 from .models import Recipe
 from django.core.paginator import Paginator
 
+
 def recipe_list(request):
-    #get_recipes_info()
+    # get_recipes_info()
     recipes = Recipe.objects.all()
-    return render(request, 'recipes/recipe_list.html', {'recipes': recipes})
+    #set up pagination 
+    p= Paginator(Recipe.objects.all(),2)
+    page = request.GET.get('page')
+    recipe = p.get_page(page)
+    
+    return render(request, 'recipes/recipe_list.html', {'recipes': recipes,'recipe':recipe})
+
+
 def recipe_detail(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
     return render(request, 'recipes/recipe_detail.html', {'recipe': recipe})
