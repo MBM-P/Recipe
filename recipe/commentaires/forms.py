@@ -11,7 +11,7 @@ class CommentaireForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['contenu'].label = "Commentaire"
+        self.fields['contenu'].label = ""
         self.fields['contenu'].widget.attrs.update({
             'class': 'form-control',
             'placeholder': 'Entrez votre commentaire ici',

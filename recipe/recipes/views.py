@@ -2,9 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .forms import RecipeForm
 from .scraper import get_recipes_info
 from .models import Recipe
-
+from django.core.paginator import Paginator
 
 def recipe_list(request):
+<<<<<<< HEAD
     #get_recipes_info()
     recipes = Recipe.objects.all()
     return render(request, 'recipes/recipe_list.html', {'recipes': recipes})
@@ -37,3 +38,13 @@ def recipe_delete(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
     recipe.delete()
     return redirect('recipe_list')
+=======
+    # get_recipes_info()
+    recipes = Recipe.objects.all()
+    #set up pagination 
+    p= Paginator(Recipe.objects.all(),2)
+    page = request.GET.get('page')
+    recipe = p.get_page(page)
+    
+    return render(request, 'recipes/recipe_list.html', {'recipes': recipes,'recipe':recipe})
+>>>>>>> 7481edc8c3fb7fe1cc39deb4a2bf11c908c3fb52
